@@ -34,7 +34,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email'         => 'required|string|email',
-            'name'        => 'required_without:email|string',
+            'name'          => 'required_without:email|string',
             'password'      => 'required|string',
             'remember_me'   => 'boolean',
             ]);
