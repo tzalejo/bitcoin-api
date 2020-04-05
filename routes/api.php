@@ -13,7 +13,22 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['prefix' => 'auth'],function(){
+    Route::post('login', 'AuthController@login'); # Me Logueo
+    Route::post('signup', 'AuthController@signup'); # Creo un usuario(Users)
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('logout', '    AuthController@logout'); # Salgo
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    });
+});
+
+# Group de ruta con prefijo alumnos, agrego cors a las rutas
+Route::group(['prefix' => 'user'], function () {
+    # Rutas con middleware auth
+    Route::group(['middleware' => ['auth:api']], function () {
+        Route::get('', 'User\UserController@index');
+        // Route::get('mostrar', 'User\UserController@show');
+        // Route::post('crear', 'User\UserController@store'); # Creo un User
+        // Route::put('modificar/{User}', 'User\UserController@update'); # Modifico un estudiante
+    });
 });
