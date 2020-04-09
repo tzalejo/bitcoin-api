@@ -4,7 +4,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
-use App\User;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -16,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
          # $this->call(UsersTableSeeder::class);
          $this->truncateTables([
-            'users', 'clientes' //, 'roles', 'materias','cursos','comisiones', 'matriculas', 'cuotas', 'estudiantes' , 'pagos', 'curso_materia'
+            'users', 'clientes', 'proveedors' //, 'roles', 'materias','cursos','comisiones', 'matriculas', 'cuotas', 'estudiantes' , 'pagos', 'curso_materia'
         ]);
         
         # La creación de datos de roles debe ejecutarse primero
@@ -26,8 +25,8 @@ class DatabaseSeeder extends Seeder
         
         # Cliente
         $this->call(ClienteSeeder::class);
-        
-        // $this->call(MateriaSeeder::class);
+        # Proveedores
+        $this->call(ProveedorSeeder::class);
         
         // $this->call(CursoSeeder::class);
         // $this->call(ComisionSeeder::class);
