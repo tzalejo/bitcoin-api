@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Cliente;
 
-use App\Http\Controllers\Controller;
 use App\Cliente;
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 
-class ClienteController extends Controller
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+class ClienteController extends ApiController
 {
     /**
      * Display a listing of the resource.
