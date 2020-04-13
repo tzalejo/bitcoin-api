@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Proveedor;
 
 use App\Http\Controllers\ApiController;
-use App\Proveedor;
 use Illuminate\Http\Request;
-
+use App\Traits\ApiResponser;
+use App\Proveedor;
+use Illuminate\Support\Facades\Validator;
 class ProveedorController extends ApiController
 {
+    use ApiResponser;
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +29,25 @@ class ProveedorController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        // lo dejo no requerido porque voy a agregar a veces prove solo el apellido..
+         $datosValidos = Validator::make($request->all(),[  
+            'apellido' => 'required',
+            'nombre' => '',
+            'email' => '',
+            'telefono' => '',
+        ]);
+        if ($datosValidos->fails()) {
+            $errors = $datosValidos->errors();
+            # retorno error 400..
+            return $this->errorResponse($errors, 400);
+        }
+        $proveedorNuevo = Proveedor::create([
+            'apellido' => $request->apellido,
+            'nombre' => $request->nombre,
+            'email' => $request->email,
+            'telefono' => $request->telefono
+        ]);
+        return $this->showOne($proveedorNuevo);
     }
 
     /**
@@ -39,6 +59,7 @@ class ProveedorController extends ApiController
     public function show(Proveedor $proveedor)
     {
         //
+
     }
 
 
