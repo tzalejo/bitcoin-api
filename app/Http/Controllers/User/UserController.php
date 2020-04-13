@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponser;
 use App\User;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     //
     use ApiResponser;
