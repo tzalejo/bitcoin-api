@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Cliente;
 use App\Cliente;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
-
+use App\Traits\ApiResponser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class ClienteController extends ApiController
 {
+    use ApiResponser;
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +30,25 @@ class ClienteController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        // return $request;
+        $datosValidos = Validator::make($request->all(),[  
+            'apellido' => 'required',
+            'nombre' => '',
+            'email' => '',
+            'telefono' => '',
+        ]);
+        if ($datosValidos->fails()) {
+            $errors = $datosValidos->errors();
+            # retorno error 400..
+            return $this->errorResponse($errors, 400);
+        }
+        $clienteNuevo = Cliente::create([
+            'apellido' => $request->apellido,
+            'nombre' => $request->nombre,
+            'email' => $request->email,
+            'telefono' => $request->telefono
+        ]);
+        return $this->showOne($clienteNuevo);
     }
 
     /**
@@ -40,7 +59,8 @@ class ClienteController extends ApiController
      */
     public function show(Cliente $cliente)
     {
-        //
+        // return $cliente;
+        return $this->showOne($cliente);
     }
 
 
