@@ -18,4 +18,8 @@ class Proveedor extends Model
     protected $fillable = [
         'nombre', 'apellido', 'telefono', 'email'
     ];
+
+    public function formularios(){
+        return $this->hasMany(Formulario::class);
+    }
 }
