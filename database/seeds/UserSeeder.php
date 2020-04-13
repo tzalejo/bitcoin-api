@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
         // creo el usuario director.
         $user= new User();
         $user->name = 'Alejandro';
+        $user->apellido = 'Valenzuela';
         $user->email = 'tzalejo@gmail.com';
         $user->password = bcrypt('secret');
         $user->email_verified_at = now();
