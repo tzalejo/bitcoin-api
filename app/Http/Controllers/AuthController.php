@@ -61,7 +61,8 @@ class AuthController extends Controller
 
         $token->save();
         return $this->successResponse([
-            'name'    => $user->name,
+            'id'            => $user->id,
+            'name'          => $user->name,
             'email'         => $user->email,
             'token'         => $tokenResult->accessToken,
             'token_type'    => 'Bearer',
