@@ -16,7 +16,7 @@ class Proveedor extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'apellido', 'telefono', 'email'
+        'dni','nombre', 'apellido', 'telefono', 'email'
     ];
 
     public function formularios(){

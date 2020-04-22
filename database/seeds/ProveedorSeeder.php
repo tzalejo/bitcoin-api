@@ -14,12 +14,13 @@ class ProveedorSeeder extends Seeder
     {
         // creo un proveedor manua
         $prove = new Proveedor();
+        $prove->dni = '12345678';
         $prove->nombre = 'Beto';
         $prove->apellido = 'Delgado';
         $prove->telefono = '4445577';
         $prove->email = 'beto@gmail.com';
         $prove->save();
         // luego genero con el factory dos mas
-        factory(Proveedor::class)->times(2)->create();
+        factory(Proveedor::class)->times(5)->create();
     }
 }
