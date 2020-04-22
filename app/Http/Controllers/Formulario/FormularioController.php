@@ -16,12 +16,25 @@ class FormularioController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return Formulario::query()
+        // return $request;
+        // filtro usando scope
+        $moneda = $request->get('compra_moneda');
+        $cliente = $request->get('cliente');
+        $estado = $request->get('estado');
+        $fechaDesde = $request->get('fechaDesde');
+        $fechaHasta = $request->get('fechaHasta');
+        $criptomoneda = $request->get('tipo_criptomoneda');
+
+        return Formulario::orderBy('id', 'ASC')
                     ->with('proveedor')
                     ->with('cliente')
+                    ->compra_moneda($moneda)
+                    ->estado($estado)
+                    ->cliente_id($cliente)
+                    ->tipo_criptomoneda($criptomoneda)
+                    ->fecha($fechaDesde, $fechaHasta)
                     ->get();
     }
 
@@ -47,6 +60,7 @@ class FormularioController extends ApiController
             'tipo_criptomoneda' => 'required', 
             'importe_compra' => 'required|numeric', 
             'fecha_compra' => 'required', 
+            // 'fecha' => '', 
             'dolar' => 'required|numeric',
             'estado' => 'required',
             'costo_criptomoneda_p' => 'required|numeric',
@@ -66,18 +80,19 @@ class FormularioController extends ApiController
 
         # creo la comision
         $formularioNuevo = Formulario::create([
-            'web' => $request->web,
-            'compra_moneda' => $request->compra_moneda,
+            'web' => ucwords(strtolower($request->web)),
+            'compra_moneda' => ucwords(strtolower($request->compra_moneda)),
             'comision_prove' => $request->comision_prove,
             'comision_vendedor' => $request->comision_vendedor,
             'valor_comision_prove' => $request->valor_comision_prove,
             'valor_comision_vendedor' => $request->valor_comision_vendedor,
             'criptomoneda' => $request->criptomoneda,
-            'tipo_criptomoneda' => $request->tipo_criptomoneda,
+            'tipo_criptomoneda' => ucwords(strtolower($request->tipo_criptomoneda)),
             'importe_compra' => $request->importe_compra,
             'fecha_compra' => $request->fecha_compra,
+            'fecha' =>  $request->fecha_compra, // guardo la misma fecha pero en formato date
             'dolar' => $request->dolar,
-            'estado' => $request->estado,
+            'estado' => strtolower($request->estado),
             'costo_criptomoneda_p' => $request->costo_criptomoneda_p,
             'costo_criptomoneda_v' => $request->costo_criptomoneda_v,
             'ganacia_criptomoneda' => $request->ganacia_criptomoneda,
@@ -99,6 +114,7 @@ class FormularioController extends ApiController
     public function show(Formulario $formulario)
     {
         //
+        
     }
 
     /**
@@ -122,6 +138,7 @@ class FormularioController extends ApiController
             'tipo_criptomoneda' => 'required', 
             'importe_compra' => 'required|numeric', 
             'fecha_compra' => 'required', 
+            // 'fecha' => '', 
             'dolar' => 'required|numeric',
             'estado' => 'required',
             'costo_criptomoneda_p' => 'required|numeric',
@@ -140,18 +157,19 @@ class FormularioController extends ApiController
         }
 
         $formulario->update([
-            'web' => $request->web,
-            'compra_moneda' => $request->compra_moneda,
+            'web' => ucwords(strtolower($request->web)),
+            'compra_moneda' => ucwords(strtolower($request->compra_moneda)),
             'comision_prove' => $request->comision_prove,
             'comision_vendedor' => $request->comision_vendedor,
             'valor_comision_prove' => $request->valor_comision_prove,
             'valor_comision_vendedor' => $request->valor_comision_vendedor,
             'criptomoneda' => $request->criptomoneda,
-            'tipo_criptomoneda' => $request->tipo_criptomoneda,
+            'tipo_criptomoneda' => ucwords(strtolower($request->tipo_criptomoneda)),
             'importe_compra' => $request->importe_compra,
             'fecha_compra' => $request->fecha_compra,
+            'fecha' =>  $request->fecha_compra, // guardo la misma fecha pero en formato date
             'dolar' => $request->dolar,
-            'estado' => $request->estado,
+            'estado' => strtolower($request->estado),
             'costo_criptomoneda_p' => $request->costo_criptomoneda_p,
             'costo_criptomoneda_v' => $request->costo_criptomoneda_v,
             'ganacia_criptomoneda' => $request->ganacia_criptomoneda,
@@ -172,6 +190,6 @@ class FormularioController extends ApiController
     public function destroy(Formulario $formulario)
     {
         $formulario->delete();
-        return $this->successResponse('Formulario eliminado correctamente');
+        return $this->successResponse('Formulario eliminado correctamente', 200);
     }
 }

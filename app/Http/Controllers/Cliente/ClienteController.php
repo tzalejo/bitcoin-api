@@ -74,6 +74,29 @@ class ClienteController extends ApiController
     public function update(Request $request, Cliente $cliente)
     {
         //
+        $datosValidos = Validator::make($request->all(), [
+            'dni' => '',
+            'apellido' => 'required',
+            'nombre' => '',
+            'email' => '',
+            'telefono' => '',
+        ]);
+        if ($datosValidos->fails()) {
+            $errors = $datosValidos->errors();
+            # retorno error 400..
+            return $this->errorResponse($errors, 400);
+        }
+
+        $cliente->update([
+            'dni' => $request->dni,
+            'apellido' => ucwords(strtolower($request->apellido)),
+            'nombre' => ucwords(strtolower($request->nombre)),
+            'email' => $request->email,
+            'telefono' => $request->telefono
+        ]);
+
+        return $this->showOne($cliente);
+
     }
 
     /**
