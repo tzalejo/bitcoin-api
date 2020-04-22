@@ -26,7 +26,8 @@ class CreateFormulariosTable extends Migration
             $table->string('tipo_criptomoneda',20);
             
             $table->float('importe_compra');
-            $table->string('fecha_compra');
+            $table->string('fecha_compra'); // guardo fecha hora y minuto
+            $table->date('fecha'); // guardo esa misma fecha pero en formato date
             $table->float('dolar');
             $table->string('estado',1); // v: venta y p: prresupuesto
             $table->float('costo_criptomoneda_p');
