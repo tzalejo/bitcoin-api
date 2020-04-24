@@ -3,32 +3,56 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Notifications\SignupActivate;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     use ApiResponser;
     public function signup(Request $request)
     {
-        $request->validate([
-            'name'    => 'required|string',
-            'email'         => 'required|string|email',
-            'password'      => 'required|string'
+        $datosValidos = Validator::make($request->all(),[  
+            'name'     => 'required|string',
+            'apellido' => 'required|string',
+            'email'    => 'required|string|email',
+            'password' => 'required|string'
         ]);
         #return $request;
+        if ($datosValidos->fails()) {
+            $errors = $datosValidos->errors();
+            # retorno error 400..
+            return $this->errorResponse($errors, 500);
+        }
 
+        // creo el usuario
         $user = User::create([
             'name'          => $request->name,
+            'apellido'      => $request->apellido,
             'email'         => $request->email,
             'password'      => Hash::make($request->password)
         ]);
+        // return $user;
+        // genero el token
+        $tokenResult = $user->createToken('Pernsal Access Token');
+        $token =  $tokenResult->token;
 
-        return $this->successResponse(['message' => 'Usuario '.$user->name.' creado satisfactoriamente'], 201);
+        if ($request->remember_me) {
+            $token->expires_at = Carbon::now()->addWeeks(1);
+        }
+
+        $token->save();
+        return $this->successResponse([
+            'id'            => $user->id,
+            'name'          => ucwords(strtolower($user->name)),
+            'apellido'      => ucwords(strtolower($user->apellido)),
+            'email'         => $user->email,
+            'token'         => $tokenResult->accessToken,
+            'token_type'    => 'Bearer',
+            'expires_at'    => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString(),
+        ], 200);
     }
     public function login(Request $request)
     {
@@ -63,6 +87,7 @@ class AuthController extends Controller
         return $this->successResponse([
             'id'            => $user->id,
             'name'          => $user->name,
+            'apellido'      => $user->apellido,
             'email'         => $user->email,
             'token'         => $tokenResult->accessToken,
             'token_type'    => 'Bearer',
