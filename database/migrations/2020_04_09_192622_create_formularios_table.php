@@ -14,7 +14,7 @@ class CreateFormulariosTable extends Migration
     public function up()
     {
         Schema::create('formularios', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             
             $table->string('web');
             $table->string('compra_moneda',20);// peso, dolar, euro, monedavirtual
@@ -35,16 +35,8 @@ class CreateFormulariosTable extends Migration
 
             $table->float('ganacia_criptomoneda'); // guardo la ganancia de la critomoneda
 
-
-            // relaciones
-            $table->unsignedInteger('cliente_id');
-            $table->foreign('cliente_id')->references('id')->on('clientes');
-            $table->unsignedInteger('proveedor_id');
-            $table->foreign('proveedor_id')->references('id')->on('proveedors');
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-
             // $table->timestamps();
+       
         });
     }
 
