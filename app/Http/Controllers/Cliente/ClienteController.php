@@ -31,7 +31,8 @@ class ClienteController extends ApiController
     public function store(Request $request)
     {
         // return $request;
-        $datosValidos = Validator::make($request->all(),[  
+        $datosValidos = Validator::make($request->all(),[
+            'dni' => '',
             'apellido' => 'required',
             'nombre' => '',
             'email' => '',
@@ -43,6 +44,7 @@ class ClienteController extends ApiController
             return $this->errorResponse($errors, 400);
         }
         $clienteNuevo = Cliente::create([
+            'dni' => $request->dni,
             'apellido' => $request->apellido,
             'nombre' => $request->nombre,
             'email' => $request->email,
