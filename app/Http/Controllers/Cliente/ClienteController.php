@@ -45,8 +45,8 @@ class ClienteController extends ApiController
         }
         $clienteNuevo = Cliente::create([
             'dni' => $request->dni,
-            'apellido' => $request->apellido,
-            'nombre' => $request->nombre,
+            'apellido' => ucwords(strtolower($request->apellido)),
+            'nombre' => ucwords(strtolower($request->nombre)),
             'email' => $request->email,
             'telefono' => $request->telefono
         ]);
