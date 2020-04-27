@@ -14,7 +14,7 @@ class AuthController extends Controller
     use ApiResponser;
     public function signup(Request $request)
     {
-        return $request;
+        // return $request;
         $datosValidos = Validator::make($request->all(),[  
             'name'     => 'required|string',
             'apellido' => 'required|string',
