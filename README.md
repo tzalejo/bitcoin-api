@@ -85,3 +85,6 @@ Para agregar token utlizando passport
 composer require laravel/passport
 
 y continuar con la configuracion.
+
+Comando esenciales:
+- php artisan passport:install
