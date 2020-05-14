@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Validator;
 use App\Mail\MensajeRegistro;
 use App\Mail\ResetPassword;
 use Illuminate\Support\Facades\Mail;
-use Faker\Generator as Faker;
-use Faker\Factory;
 class AuthController extends Controller
 {
     use ApiResponser;
@@ -136,9 +134,8 @@ class AuthController extends Controller
             return $this->errorResponse(`No existe el usuario con el mail ${$usuario['email']}.`, 400);
         }
         // reseteo password
-        $faker = Factory::create();
-        // genero un nuevo password
-        $nuevoPass = $faker->randomNumber(8, false);
+        // genero un numero aleatorio..
+        $nuevoPass = intval( "0" . rand(1,9). rand(0,9). rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9). rand(0,9) );
         // Hash::make($nuevoPass);
         $usuario->update([
             'password' => Hash::make($nuevoPass)
