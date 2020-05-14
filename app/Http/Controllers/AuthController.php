@@ -9,6 +9,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\MensajeRegistro;
+use App\Mail\ResetPassword;
+use Illuminate\Support\Facades\Mail;
+use Faker\Generator as Faker;
+use Faker\Factory;
 class AuthController extends Controller
 {
     use ApiResponser;
@@ -18,14 +23,18 @@ class AuthController extends Controller
         $datosValidos = Validator::make($request->all(),[  
             'name'     => 'required|string',
             'apellido' => 'required|string',
-            'email'    => 'required|string|email',
+            'email'    => 'required|string|email|unique:users',
             'password' => 'required|string'
         ]);
         #return $request;
         if ($datosValidos->fails()) {
+            # si el error es por el mail..
+            if ($datosValidos->fails('email.unique')) {
+                return $this->errorResponse('El Email del usuario ya esta registrado, verifique', 400);
+            }
             $errors = $datosValidos->errors();
             # retorno error 400..
-            return $this->errorResponse($errors, 500);
+            return $this->errorResponse($errors, 400);
         }
 
         // creo el usuario
@@ -45,6 +54,11 @@ class AuthController extends Controller
         }
 
         $token->save();
+        
+        // email de registracion..
+        Mail::to($request->email)
+            ->send(new MensajeRegistro($request));
+            
         return $this->successResponse([
             'id'            => $user->id,
             'name'          => ucwords(strtolower($user->name)),
@@ -104,9 +118,36 @@ class AuthController extends Controller
     }
 
       
-    public function delete(Request $request)
+    public function resetPassword(Request $request)
     {
-        return 'bien';
-        #eliminar
+        $datosValidos = Validator::make($request->all(),[  
+            'email'    => 'required|string|email'
+        ]);
+        #return $request;
+        if ($datosValidos->fails()) {
+            $errors = $datosValidos->errors();
+            # retorno error 400..
+            return $this->errorResponse($errors, 400);
+        }
+
+        $usuario = User::where('email',$request->email)->first();
+        if (!$usuario) {
+            # code...
+            return $this->errorResponse(`No existe el usuario con el mail ${$usuario['email']}.`, 400);
+        }
+        // reseteo password
+        $faker = Factory::create();
+        // genero un nuevo password
+        $nuevoPass = $faker->randomNumber(8, false);
+        // Hash::make($nuevoPass);
+        $usuario->update([
+            'password' => Hash::make($nuevoPass)
+        ]);
+
+        // email de registracion..
+        $user = ['name' => ucwords(strtolower($usuario->name)), 'apellido' => ucwords(strtolower($usuario->apellido)), 'email' => $usuario->email, 'password' => $nuevoPass ];
+        Mail::to($usuario->email)
+            ->send(new ResetPassword($user));
+        return $this->successResponse(['message'=>'Password Reenviado.'], 200);
     }
 }
