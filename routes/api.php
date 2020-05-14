@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'auth'],function(){
     Route::post('login', 'AuthController@login'); # Me Logueo
     Route::post('signup', 'AuthController@signup'); # Creo un usuario(Users)
+    Route::post('resetPassword', 'AuthController@resetPassword'); # Para reenviar password
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', '    AuthController@logout'); # Salgo
-
     });
 });
 
