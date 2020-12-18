@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Cliente;
 
 use App\Cliente;
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\StoreClienteRequest;
+use App\Http\Requests\UpdateClienteRequest;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponser;
 use Illuminate\Support\Facades\Validator;
@@ -28,21 +30,8 @@ class ClienteController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreClienteRequest $request)
     {
-        // return $request;
-        $datosValidos = Validator::make($request->all(),[
-            'dni' => '',
-            'apellido' => 'required',
-            'nombre' => '',
-            'email' => '',
-            'telefono' => '',
-        ]);
-        if ($datosValidos->fails()) {
-            $errors = $datosValidos->errors();
-            # retorno error 400..
-            return $this->errorResponse($errors, 400);
-        }
         $clienteNuevo = Cliente::create([
             'dni' => $request->dni,
             'apellido' => ucwords(strtolower($request->apellido)),
@@ -73,22 +62,8 @@ class ClienteController extends ApiController
      * @param  \App\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cliente $cliente)
+    public function update(UpdateClienteRequest $request, Cliente $cliente)
     {
-        //
-        $datosValidos = Validator::make($request->all(), [
-            'dni' => '',
-            'apellido' => 'required',
-            'nombre' => '',
-            'email' => '',
-            'telefono' => '',
-        ]);
-        if ($datosValidos->fails()) {
-            $errors = $datosValidos->errors();
-            # retorno error 400..
-            return $this->errorResponse($errors, 400);
-        }
-
         $cliente->update([
             'dni' => $request->dni,
             'apellido' => ucwords(strtolower($request->apellido)),

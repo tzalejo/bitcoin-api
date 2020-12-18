@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Proveedor;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\StoreProveedorRequest;
+use App\Http\Requests\UpdateProveedorRequest;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponser;
 use App\Proveedor;
@@ -28,21 +30,8 @@ class ProveedorController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProveedorRequest $request)
     {
-        // lo dejo no requerido porque voy a agregar a veces prove solo el apellido..
-        $datosValidos = Validator::make($request->all(), [
-            'dni' => '',
-            'apellido' => 'required',
-            'nombre' => '',
-            'email' => '',
-            'telefono' => '',
-        ]);
-        if ($datosValidos->fails()) {
-            $errors = $datosValidos->errors();
-            # retorno error 400..
-            return $this->errorResponse($errors, 400);
-        }
         $proveedorNuevo = Proveedor::create([
             'dni' => $request->dni,
             'apellido' => ucwords(strtolower($request->apellido)),
@@ -73,21 +62,8 @@ class ProveedorController extends ApiController
      * @param  \App\Proveedor  $proveedor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Proveedor $proveedor)
+    public function update(UpdateProveedorRequest $request, Proveedor $proveedor)
     {
-        $datosValidos = Validator::make($request->all(), [
-            'dni' => '',
-            'apellido' => 'required',
-            'nombre' => '',
-            'email' => '',
-            'telefono' => '',
-        ]);
-        if ($datosValidos->fails()) {
-            $errors = $datosValidos->errors();
-            # retorno error 400..
-            return $this->errorResponse($errors, 400);
-        }
-
         $proveedor->update([
             'dni' => $request->dni,
             'apellido' => ucwords(strtolower($request->apellido)),
