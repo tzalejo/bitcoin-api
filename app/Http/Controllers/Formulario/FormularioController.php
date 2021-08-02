@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\ApiResponser;
 use App\Formulario;
+use App\Http\Requests\StoreFormularioRequest;
+use App\Http\Requests\UpdateFormularioRequest;
 
 class FormularioController extends ApiController
 {
@@ -28,14 +30,14 @@ class FormularioController extends ApiController
         $criptomoneda = $request->get('tipo_criptomoneda');
 
         return Formulario::orderBy('id', 'ASC')
-                    ->with('proveedor')
-                    ->with('cliente')
-                    ->compra_moneda($moneda)
-                    ->estado($estado)
-                    ->cliente_id($cliente)
-                    ->tipo_criptomoneda($criptomoneda)
-                    ->fecha($fechaDesde, $fechaHasta)
-                    ->get();
+            ->with('proveedor')
+            ->with('cliente')
+            ->compra_moneda($moneda)
+            ->estado($estado)
+            ->cliente_id($cliente)
+            ->tipo_criptomoneda($criptomoneda)
+            ->fecha($fechaDesde, $fechaHasta)
+            ->get();
     }
 
     /**
@@ -44,40 +46,8 @@ class FormularioController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreFormularioRequest $request)
     {
-        //
-        // return $request;
-
-        $datosValidos = Validator::make($request->all(),[  
-            'web' => 'required',
-            'compra_moneda' => 'required',
-            'comision_prove' => 'required|numeric',
-            'comision_vendedor' => 'required|numeric',
-            'valor_comision_prove' => 'required|numeric',
-            'valor_comision_vendedor' => 'required|numeric',
-            'criptomoneda' => 'required|numeric', 
-            'tipo_criptomoneda' => 'required', 
-            'importe_compra' => 'required|numeric', 
-            'fecha_compra' => 'required', 
-            // 'fecha' => '', 
-            'dolar' => 'required|numeric',
-            'estado' => 'required',
-            'costo_criptomoneda_p' => 'required|numeric',
-            'costo_criptomoneda_v' => 'required|numeric',
-            'ganacia_criptomoneda' => 'required|numeric',
-            'cliente_id' => 'required|numeric',
-            'proveedor_id' => 'required|numeric',
-            'user_id' => 'required|numeric',
-        ]);
-        // return $datosValidos;
-         # verifico si hubo errores en la validaciones..
-        if ($datosValidos->fails()) {
-            $errors = $datosValidos->errors();
-            # retorno error 400..
-            return $this->errorResponse($errors, 400);
-        }
-
         # creo la comision
         $formularioNuevo = Formulario::create([
             'web' => ucwords(strtolower($request->web)),
@@ -87,10 +57,12 @@ class FormularioController extends ApiController
             'valor_comision_prove' => $request->valor_comision_prove,
             'valor_comision_vendedor' => $request->valor_comision_vendedor,
             'criptomoneda' => $request->criptomoneda,
-            'tipo_criptomoneda' => ucwords(strtolower($request->tipo_criptomoneda)),
+            'tipo_criptomoneda' => ucwords(
+                strtolower($request->tipo_criptomoneda)
+            ),
             'importe_compra' => $request->importe_compra,
             'fecha_compra' => $request->fecha_compra,
-            'fecha' =>  $request->fecha_compra, // guardo la misma fecha pero en formato date
+            'fecha' => $request->fecha_compra, // guardo la misma fecha pero en formato date
             'dolar' => $request->dolar,
             'estado' => strtolower($request->estado),
             'costo_criptomoneda_p' => $request->costo_criptomoneda_p,
@@ -102,7 +74,6 @@ class FormularioController extends ApiController
         ]);
         # retorno ok
         return $this->showOne($formularioNuevo);
-        
     }
 
     /**
@@ -114,7 +85,6 @@ class FormularioController extends ApiController
     public function show(Formulario $formulario)
     {
         //
-        
     }
 
     /**
@@ -124,38 +94,10 @@ class FormularioController extends ApiController
      * @param  \App\formulario  $formulario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Formulario $formulario)
-    {
-        // return $formulario;
-        $datosValidos = Validator::make($request->all(),[
-            'web' => 'required',
-            'compra_moneda' => 'required',
-            'comision_prove' => 'required|numeric',
-            'comision_vendedor' => 'required|numeric',
-            'valor_comision_prove' => 'required|numeric',
-            'valor_comision_vendedor' => 'required|numeric',
-            'criptomoneda' => 'required|numeric', 
-            'tipo_criptomoneda' => 'required', 
-            'importe_compra' => 'required|numeric', 
-            'fecha_compra' => 'required', 
-            // 'fecha' => '', 
-            'dolar' => 'required|numeric',
-            'estado' => 'required',
-            'costo_criptomoneda_p' => 'required|numeric',
-            'costo_criptomoneda_v' => 'required|numeric',
-            'ganacia_criptomoneda' => 'required|numeric',
-            'cliente_id' => 'required|numeric',
-            'proveedor_id' => 'required|numeric',
-            'user_id' => 'required|numeric',
-        ]);
-
-         # verifico si hubo errores en la validaciones..
-         if ($datosValidos->fails()) {
-            $errors = $datosValidos->errors();
-            # retorno error 400..
-            return $this->errorResponse($errors, 400);
-        }
-
+    public function update(
+        UpdateFormularioRequest $request,
+        Formulario $formulario
+    ) {
         $formulario->update([
             'web' => ucwords(strtolower($request->web)),
             'compra_moneda' => ucwords(strtolower($request->compra_moneda)),
@@ -164,10 +106,12 @@ class FormularioController extends ApiController
             'valor_comision_prove' => $request->valor_comision_prove,
             'valor_comision_vendedor' => $request->valor_comision_vendedor,
             'criptomoneda' => $request->criptomoneda,
-            'tipo_criptomoneda' => ucwords(strtolower($request->tipo_criptomoneda)),
+            'tipo_criptomoneda' => ucwords(
+                strtolower($request->tipo_criptomoneda)
+            ),
             'importe_compra' => $request->importe_compra,
             'fecha_compra' => $request->fecha_compra,
-            'fecha' =>  $request->fecha_compra, // guardo la misma fecha pero en formato date
+            'fecha' => $request->fecha_compra, // guardo la misma fecha pero en formato date
             'dolar' => $request->dolar,
             'estado' => strtolower($request->estado),
             'costo_criptomoneda_p' => $request->costo_criptomoneda_p,
@@ -190,6 +134,9 @@ class FormularioController extends ApiController
     public function destroy(Formulario $formulario)
     {
         $formulario->delete();
-        return $this->successResponse('Formulario eliminado correctamente', 200);
+        return $this->successResponse(
+            'Formulario eliminado correctamente',
+            200
+        );
     }
 }
