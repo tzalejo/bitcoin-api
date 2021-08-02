@@ -87,4 +87,5 @@ composer require laravel/passport
 y continuar con la configuracion.
 
 Comando esenciales:
+- php artisan migrate:refresh
 - php artisan passport:install
