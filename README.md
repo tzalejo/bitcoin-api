@@ -89,3 +89,4 @@ y continuar con la configuracion.
 Comando esenciales:
 - php artisan migrate:refresh
 - php artisan passport:install
+- vendor/bin/phpstan analyse app tests --memory-limit 1G
