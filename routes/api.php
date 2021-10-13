@@ -46,7 +46,7 @@ Route::group(['prefix' => 'proveedor'], function () {
     Route::group(['middleware' => ['auth:api']], function () {
         Route::get('', 'Proveedor\ProveedorController@index');
         Route::post('crear', 'Proveedor\ProveedorController@store'); # Creo un proveedor
-        Route::put('modificar/{proveedor}', 'Proveedor\ProveedorController@update'); # Creo un proveedor
+        Route::put('modificar/{proveedor}', 'Proveedor\ProveedorController@update'); # modifico un proveedor
     });
 });
 # Group de ruta con prefijo formulario, agrego cors a las rutas
