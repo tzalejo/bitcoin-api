@@ -87,10 +87,7 @@ composer require laravel/passport
 y continuar con la configuracion.
 
 Comando esenciales:
-<<<<<<< HEAD
 - php artisan passport:install
-=======
 - php artisan migrate:refresh
 - php artisan passport:install
 - vendor/bin/phpstan analyse app tests --memory-limit 1G
->>>>>>> 15b6d1592df56bad98b5ba1cd608c9e6e418509c
