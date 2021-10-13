@@ -15,7 +15,7 @@ class ProveedorController extends ApiController
     
     public function index(): \Illuminate\Http\JsonResponse
     {
-       return Proveedor::query()->orderBy('id', 'ASC')->get();
+        return $this->showAll(Proveedor::query()->orderBy('id', 'ASC')->get());
     }
 
     public function store(StoreProveedorRequest $request): \Illuminate\Http\JsonResponse

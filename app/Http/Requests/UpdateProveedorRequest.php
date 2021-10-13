@@ -27,7 +27,7 @@ class UpdateProveedorRequest extends FormRequest
             'dni' => '',
             'apellido' => 'required',
             'nombre' => '',
-            'email' => '',
+            'email' => 'email',
             'telefono' => '',
         ];
     }

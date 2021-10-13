@@ -14,9 +14,9 @@ use Illuminate\Validation\Rule;
 class ClienteController extends ApiController
 {
     use ApiResponser;
-    public function index(): \Illuminate\Http\Response
+    public function index():  \Illuminate\Http\JsonResponse
     {
-        return Cliente::query()->orderBy('apellido','ASC')->get();
+        return $this->showAll(Cliente::query()->orderBy('apellido','ASC')->get());
     }
 
     public function store(StoreClienteRequest $request): \Illuminate\Http\JsonResponse

@@ -11,9 +11,9 @@ class UserController extends ApiController
 {
     use ApiResponser;
     
-    public function index(): \Illuminate\Http\Response
+    public function index(): \Illuminate\Http\JsonResponse
     {
-        return User::query()->orderBy('name','ASC')->get();
+        return $this->showAll(User::query()->orderBy('name','ASC')->get());
     }
 
 }
