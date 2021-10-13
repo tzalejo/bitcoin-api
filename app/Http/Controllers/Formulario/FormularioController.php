@@ -13,11 +13,6 @@ use App\Http\Requests\UpdateFormularioRequest;
 class FormularioController extends ApiController
 {
     use ApiResponser;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         // return $request;
@@ -40,13 +35,7 @@ class FormularioController extends ApiController
             ->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreFormularioRequest $request)
+    public function store(StoreFormularioRequest $request): \Illuminate\Http\JsonResponse
     {
         # creo la comision
         $formularioNuevo = Formulario::create([
@@ -76,28 +65,11 @@ class FormularioController extends ApiController
         return $this->showOne($formularioNuevo);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\formulario  $formulario
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Formulario $formulario)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\formulario  $formulario
-     * @return \Illuminate\Http\Response
-     */
     public function update(
         UpdateFormularioRequest $request,
         Formulario $formulario
-    ) {
+    )
+    {
         $formulario->update([
             'web' => ucwords(strtolower($request->web)),
             'compra_moneda' => ucwords(strtolower($request->compra_moneda)),
@@ -125,13 +97,7 @@ class FormularioController extends ApiController
         return $this->showOne($formulario);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\formulario  $formulario
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Formulario $formulario)
+    public function destroy(Formulario $formulario): \Illuminate\Http\Response
     {
         $formulario->delete();
         return $this->successResponse(

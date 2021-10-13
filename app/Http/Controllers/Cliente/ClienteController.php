@@ -14,23 +14,12 @@ use Illuminate\Validation\Rule;
 class ClienteController extends ApiController
 {
     use ApiResponser;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): \Illuminate\Http\Response
     {
         return Cliente::query()->orderBy('apellido','ASC')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreClienteRequest $request)
+    public function store(StoreClienteRequest $request): \Illuminate\Http\JsonResponse
     {
         $clienteNuevo = Cliente::create([
             'dni' => $request->dni,
@@ -42,27 +31,13 @@ class ClienteController extends ApiController
         return $this->showOne($clienteNuevo);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Cliente  $cliente
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cliente $cliente)
+    public function show(Cliente $cliente): \Illuminate\Http\JsonResponse
     {
         // return $cliente;
         return $this->showOne($cliente);
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Cliente  $cliente
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateClienteRequest $request, Cliente $cliente)
+    public function update(UpdateClienteRequest $request, Cliente $cliente): \Illuminate\Http\JsonResponse
     {
         $cliente->update([
             'dni' => $request->dni,
@@ -75,15 +50,5 @@ class ClienteController extends ApiController
         return $this->showOne($cliente);
 
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Cliente  $cliente
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Cliente $cliente)
-    {
-        //
-    }
+    
 }

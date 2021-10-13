@@ -66,9 +66,9 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
-            'host' =>  env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' =>  env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
+            'database' =>  env('DB_DATABASE', 'forge'),
             'username' =>  env('DB_USERNAME', 'forge'),
             'password' =>  env('DB_PASSWORD', ''),
             'charset' => 'utf8',
@@ -77,6 +77,20 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        // 'pgsql' => [
+        //     'driver' => 'pgsql',
+        //     'url' => env('DATABASE_URL'),
+        //     'host' => $DB_URL['host'], // env('DB_HOST', '127.0.0.1'),
+        //     'port' => $DB_URL['port'], // env('DB_PORT', '5432'),
+        //     'database' => ltrim($DB_URL['path'], '/'), // env('DB_DATABASE', 'forge'),
+        //     'username' => $DB_URL['user'], // env('DB_USERNAME', 'forge'),
+        //     'password' => $DB_URL['pass'], // env('DB_PASSWORD', ''),
+        //     'charset' => 'utf8',
+        //     'prefix' => '',
+        //     'prefix_indexes' => true,
+        //     'schema' => 'public',
+        //     'sslmode' => 'prefer',
+        // ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

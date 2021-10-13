@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Proveedor;
 
 use App\Http\Controllers\ApiController;
@@ -13,24 +12,13 @@ use Illuminate\Support\Facades\Validator;
 class ProveedorController extends ApiController
 {
     use ApiResponser;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    
+    public function index(): \Illuminate\Http\JsonResponse
     {
-        //
-        return Proveedor::query()->orderBy('id', 'ASC')->get();
+       return Proveedor::query()->orderBy('id', 'ASC')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProveedorRequest $request)
+    public function store(StoreProveedorRequest $request): \Illuminate\Http\JsonResponse
     {
         $proveedorNuevo = Proveedor::create([
             'dni' => $request->dni,
@@ -42,27 +30,7 @@ class ProveedorController extends ApiController
         return $this->showOne($proveedorNuevo);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Proveedor  $proveedor
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Proveedor $proveedor)
-    {
-        //
-
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Proveedor  $proveedor
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateProveedorRequest $request, Proveedor $proveedor)
+    public function update(UpdateProveedorRequest $request, Proveedor $proveedor): \Illuminate\Http\JsonResponse
     {
         $proveedor->update([
             'dni' => $request->dni,
@@ -75,14 +43,4 @@ class ProveedorController extends ApiController
         return $this->showOne($proveedor);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Proveedor  $proveedor
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Proveedor $proveedor)
-    {
-        //
-    }
 }
